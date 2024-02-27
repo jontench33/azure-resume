@@ -1,19 +1,23 @@
-window.addEventListener('DOMContentLoaded', (event) =>{
+window.addEventListener('DOMContentLoaded', (event) => {
     getVisitCount();
-})
+});
 
-const functionApi = '';
+const functionApi = 'http://localhost:7071/api/GetAndUpdateCounter';
 
 const getVisitCount = () => {
-    let count = 30;
-    fetch(functionApi).then(response => {
-        return response.json
-    }).then(reponse =>{
-        console.log("Website called function API.");
-        count = reponse.count;
-        document.getElementById("counter").innertext = count;
-    }).catch(function(error){
-        console.log(error);
-    });
-    return count;
-}
+    fetch(functionApi)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Website called function API.");
+            const count = data.count;
+            document.getElementById("counter").innerText = count;
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+};
